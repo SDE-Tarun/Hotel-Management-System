@@ -2,13 +2,42 @@
 <html>
     <head>
         <title>Hotel Booking</title>
+        <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
-        <h1>Welcome</h1>
-        <a href="login.html">Login</a>
-        <a href="register.html">Register</a>
-        <a href="admin.html">Admin Panel</a>
-        <a href="user.html">User Dashboard</a>
+        <h1>Welcome to Hotel Management System</h1>
+
+        <div class="auth-section" id="user-auth-section">
+            <h2>User Access</h2>
+            <nav id="auth-links">
+                <a href="login.html">User Login</a>
+                <a href="register.html">User Register</a>
+            </nav>
+        </div>
+
+        <div class="auth-section" id="admin-auth-section">
+            <h2>Admin Access</h2>
+             <nav id="admin-auth-links">
+                <a href="login.html">Admin Login</a> 
+                <a href="admin-register.html">Admin Register</a> 
+            </nav>
+        </div>
+
+
+        <nav id="user-links" style="display: none;">
+             <h3>User Dashboard</h3>
+            <a href="user.html">Go to Dashboard</a>
+            <a href="#" id="logout-button">Logout</a>
+        </nav>
+
+        <nav id="admin-links" style="display: none;">
+             <h3>Admin Panel</h3>
+            <a href="admin.html">Go to Admin Panel</a>
+            <a href="#" id="admin-logout-button">Logout</a>
+        </nav>
+
+        <script src="js/auth_helpers.js"></script>
+        <script src="js/auth.js"></script>
     </body>
 </html>

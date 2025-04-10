@@ -1,42 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <title>User Dashboard</title>
+    <title>User Dashboard - Hotel Booking</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Available Rooms</h2>
-    <button id="getRooms">Load Rooms</button>
-    <div id="rooms"></div>
-    <script>
-        document.getElementById('getRooms').onclick = async () => {
-            const token = localStorage.getItem('token')
-            const r = await fetch('/rooms', {
-                headers: {"Authorization": 'Bearer '+token}
-            })
-            const d = await r.json()
-            const roomsDiv = document.getElementById('rooms')
-            roomsDiv.innerHTML = ''
-            d.forEach(room => {
-                let btn = `<button onclick="book('${room._id}')"> Book </button>`
-                if(room.available) {
-                    roomsDiv.innerHTML += `<p>${room.type} - $${room.price} - ${btn}</p>`
-                }
-                else {
-                    roomsDiv.innerHTML += `<p>${room.type} - $${room.price} - </p>`    
-                }
-            });
-        }
-        async function book(id){
-            const token = localStorage.getItem('token')
-            const r = await fetch('/book', {
-                method:'POST',
-                headers: {
-                    'Content-Type':'application/json',
-                    'Authorization': 'Bearer ' + token},
-                    body: JSON.stringify({ roomId: id })
-                })
-                console.log(await r.json())
-            }
-        </script>
+    <nav class="navbar">
+        <h1>Hotel Paradise - User Dashboard</h1>
+        <div>
+            <span id="welcome-user"></span>
+            <a href="#" id="logout-button">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="user-dashboard-message" class="message-area"></div>
+
+        <section id="available-rooms-section">
+            <h2>Available Rooms</h2>
+            <div id="available-rooms-list" class="room-list">
+                <p>Loading available rooms...</p>
+            </div>
+        </section>
+
+        <section id="booking-section">
+            <h2>Book a Room</h2>
+            <form id="booking-form">
+                 <p>Select a room from the list above to see booking options.</p>
+                 <div id="booking-details" style="display: none;">
+                    <input type="hidden" id="booking-room-id" name="roomId">
+                    <p>Selected Room: <strong id="selected-room-type"></strong> - $<span id="selected-room-price"></span>/night</p>
+                    <div>
+                        <label for="start-date">Start Date:</label>
+                        <input type="date" id="start-date" name="startDate" required>
+                    </div>
+                     <div>
+                        <label for="end-date">End Date:</label>
+                        <input type="date" id="end-date" name="endDate" required>
+                    </div>
+                    <button type="submit">Confirm Booking</button>
+                     <div id="booking-form-message" class="message-area"></div>
+                 </div>
+            </form>
+        </section>
+
+        <section id="my-bookings-section">
+            <h2>Your Bookings</h2>
+            <div id="user-bookings-list" class="booking-list">
+                <p>Loading your bookings...</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="js/auth_helpers.js"></script>
+    <script src="js/user.js"></script>
 </body>
 </html>

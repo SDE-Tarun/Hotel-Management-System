@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register - Hotel Booking</title>
+    <title>Admin Registration - Hotel Booking</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Register</h1>
-        <form id="register-form">
+        <h1>Admin Registration</h1>
+        <p>This form is for registering new administrators.</p>
+        <form id="admin-register-form">
             <div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -17,17 +18,22 @@
                 <input type="email" id="email" name="email" required>
             </div>
             <div>
-                <label for="password">Password:</label>
+                <label for="password">Password (min 6 chars):</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit">Register</button>
-            <div id="register-message" class="message-area"></div>
+             <div>
+                <label for="admin-secret">Admin Secret Code:</label>
+                <input type="password" id="admin-secret" name="adminSecret" required>
+                 <small>A code is required to register as an admin.</small>
+            </div>
+            <button type="submit">Register Admin</button>
+            <div id="admin-register-message" class="message-area"></div>
         </form>
         <p>Already have an account? <a href="login.html">Login here</a></p>
         <p><a href="index.html">Back to Home</a></p>
     </div>
 
     <script src="js/auth_helpers.js"></script>
-    <script src="js/register.js"></script>
+    <script src="js/admin-register.js"></script>
 </body>
-</html>
+</html> 

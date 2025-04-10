@@ -1,19 +1,23 @@
-require('dotenv').config()
 const express = require('express')
-const mongoose = require('mongoose')
+const path = require('path')
+const dotenv = require('dotenv')
+const connectDB = require('./config/db')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('./models/User')
 const Room = require('./models/Room')
 const Booking = require('./models/Booking')
 
+dotenv.config()
+
+connectDB()
+
 const app = express()
+
 app.use(express.json())
-app.use(express.urlencoded({extended: false}))
-app.use(express.static('public'))
-mongoose.connect(process.env.DB_URL)
+app.use(express.urlencoded({ extended: true }))
 
-
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.post('/register', async (req, res) => {
   const { username, password, isAdmin } = req.body
@@ -124,8 +128,32 @@ app.delete('/cancel/:id', async (req, res) => {
   await booking.deleteOne()
   res.json({ msg: 'Booking canceled' })
 })
- 
-const port = process.env.PORT || 4000
-app.listen(port, () => {
-  console.log(`The server is up at \n http://localhost:${port}`);
-});
+
+app.use('/api/auth', require('./routes/authRoutes'))
+app.use('/api/rooms', require('./routes/roomRoutes'))
+app.use('/api/bookings', require('./routes/bookingRoutes'))
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+
+app.get('/:page', (req, res) => {
+    const allowedPages = ['login.html', 'register.html', 'user.html', 'admin.html', 'index.html', 'admin-register.html']
+    let requestedPage = req.params.page
+
+    if (!requestedPage.endsWith('.html')) {
+        requestedPage += '.html'
+    }
+
+    if (allowedPages.includes(requestedPage)) {
+        res.sendFile(path.join(__dirname, 'public', requestedPage))
+    } else {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'))
+    }
+})
+
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`)
+})
