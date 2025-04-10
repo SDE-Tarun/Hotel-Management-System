@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin</title>
+</head>
+<body>
+    <h2>Add Room</h2>
+    <form id="roomForm">
+        <input type="text" id="type" placeholder="type">
+        <input type="number" id="price" placeholder="price">
+        <button type="submit">Add</button>
+    </form>
+    <script>
+        document.getElementById('roomForm').addEventListener('submit', async (e)=>{
+            e.preventDefault()
+            const token = localStorage.getItem('token')
+            const type = document.getElementById('type').value
+            const price = document.getElementById('price').value
+
+            try {
+                const response = await fetch('/rooms', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type':'application/json',
+                    'Authorization': 'Bearer ' + token},
+                    body: JSON.stringify({type,price})
+                })
+                const data = await response.json()
+                alert(data.msg || "Room Added")
+            }
+            catch(err) {
+                alert("An error occured: " + err.message)
+            }
+        })
+    </script>
+</body>
+</html>

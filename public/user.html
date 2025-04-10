@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h2>Available Rooms</h2>
+    <button id="getRooms">Load Rooms</button>
+    <div id="rooms"></div>
+    <script>
+        document.getElementById('getRooms').onclick = async () => {
+            const token = localStorage.getItem('token')
+            const r = await fetch('/rooms', {
+                headers: {"Authorization": 'Bearer '+token}
+            })
+            const d = await r.json()
+            const roomsDiv = document.getElementById('rooms')
+            roomsDiv.innerHTML = ''
+            d.forEach(room => {
+                let btn = `<button onclick="book('${room._id}')"> Book </button>`
+                if(room.available) {
+                    roomsDiv.innerHTML += `<p>${room.type} - $${room.price} - ${btn}</p>`
+                }
+                else {
+                    roomsDiv.innerHTML += `<p>${room.type} - $${room.price} - </p>`    
+                }
+            });
+        }
+        async function book(id){
+            const token = localStorage.getItem('token')
+            const r = await fetch('/book', {
+                method:'POST',
+                headers: {
+                    'Content-Type':'application/json',
+                    'Authorization': 'Bearer ' + token},
+                    body: JSON.stringify({ roomId: id })
+                })
+                console.log(await r.json())
+            }
+        </script>
+</body>
+</html>

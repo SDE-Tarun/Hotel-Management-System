@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <h2>User Registeration</h2>
+    <form id="registerForm">
+        <input type="text" id="username" placeholder="username" required>
+        <input type="password" id="password" placeholder="password" required>
+        <label>
+            Admin: <input type="checkbox" id="isAdmin">
+        </label>
+        <button type="submit">Register</button>
+    </form>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault()
+            const username = document.getElementById('username').value
+            const password= document.getElementById('password').value
+            const isAdmin = document.getElementById('isAdmin').checked
+            const reponse = await fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({ username, password, isAdmin})
+            })
+            .then(response => response.json().then(data => {
+                alert(data.msg)
+                if(response.ok) window.location.href = '/login.html'
+            }))
+        })
+    </script>
+</body>
+</html>
